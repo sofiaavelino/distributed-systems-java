@@ -42,4 +42,76 @@ javac ds/assign/ring/Injector.java
 java ds.assign.ring.Server <server_port> localhost
 ```
 
+#### 2. Start each peer (one per machine), forming the ring
 
+```bash
+java -cp .:ds/poisson/src ds.assign.ring.Peer <own_port> localhost <next_peer_port> <server_port>
+```
+
+#### 3. Start the injector (peer that initially holds the token)
+
+```bash
+java ds.assign.ring.Injector <peer_port_with_initial_token>
+```
+
+## 🟩 Exercise 2 — Anti-Entropy Data Dissemination
+
+### 🔨 Compile
+
+```bash
+javac -cp .:ds/poisson/src ds/assign/entropy/Peer.java
+javac ds/assign/entropy/Starter.java
+```
+
+### ▶️ Run
+
+#### 1. Start each peer (listing its neighbors)
+
+```bash
+java -cp .:ds/poisson/src ds.assign.entropy.Peer <own_port> localhost <neighbor_port_1> <neighbor_port_2> ...
+```
+
+#### 2. Start the Starter
+
+```bash
+java ds.assign.entropy.Starter <port_peer1> <port_peer2> <port_peer3> ...
+```
+
+## 🟥 Exercise 3 — Totally Ordered Multicast (Lamport Clocks)
+
+### 🔨 Compile
+
+```bash
+javac -cp .:ds/poisson/src ds/assign/chat/Peer.java
+javac ds/assign/chat/Starter.java
+```
+
+### ▶️ Run
+
+#### 1. Start each peer (listing all other peers)
+
+```bash
+java -cp .:ds/poisson/src ds.assign.chat.Peer <own_port> localhost <port_peer2> <port_peer3> ...
+```
+
+#### 2. Start the Starter
+
+```bash
+java ds.assign.chat.Starter <port_peer1> <port_peer2> <port_peer3> ...
+```
+
+## 🛑 Stopping All Peers Simultaneously
+
+In Exercise 3, to compare message lists correctly, stop all peers at the same time:
+
+### 1. Identify processes:
+
+```bash
+ps aux | grep <peer_port>
+```
+
+### 2. Kill them all:
+
+```bash
+kill -9 <pid1> <pid2> <pid3> ...
+```
